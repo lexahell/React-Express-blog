@@ -2,7 +2,11 @@ import PostModel from '../models/Post.js';
 
 export const getAll = async (req, res) => {
   try {
-    const posts = await PostModel.find().populate('user').exec();
+    const sortProperty = req.query.sortBy;
+    const posts = await PostModel.find()
+      .sort({ [sortProperty]: -1 })
+      .populate('user')
+      .exec();
     res.json(posts);
   } catch (err) {
     console.log(err);

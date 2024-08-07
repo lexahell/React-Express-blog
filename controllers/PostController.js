@@ -118,3 +118,18 @@ export const update = async (req, res) => {
     });
   }
 };
+
+export const getPostsByTag = async (req, res) => {
+  try {
+    const posts = await PostModel.find({ tags: req.params.tag })
+      .sort({ viewsCount: -1 })
+      .populate('user')
+      .exec();
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить статьи',
+    });
+  }
+};
